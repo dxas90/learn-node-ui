@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interactive UI to explore and test Learn Node API endpoints. Test connectivity, view responses, and explore API functionality.">
+    <meta name="keywords" content="Node.js, API, REST, testing, learn, development">
+    <meta name="author" content="Daniel Ramirez">
+    <meta name="theme-color" content="#667eea">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Learn Node API Explorer">
+    <meta property="og:description" content="Interactive UI to explore and test Learn Node API endpoints">
+    <meta property="og:url" content="">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="Learn Node API Explorer">
+    <meta property="twitter:description" content="Interactive UI to explore and test Learn Node API endpoints">
+
+    <title>Learn Node API Explorer - Interactive API Testing UI</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
+    <link rel="alternate icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==">
+
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="preload" href="script.js" as="script">
+</head>
+<body>
+    <div class="container">
+        <header role="banner">
+            <h1>🚀 Learn Node API Explorer</h1>
+            <p class="subtitle">Interactive UI to explore and test my API endpoints</p>
+        </header>
+
+        <main role="main">
+            <section class="config-section" aria-labelledby="config-heading">
+                <h2 id="config-heading" class="visually-hidden">API Configuration</h2>
+                <label for="apiUrl">API Base URL:</label>
+                <input
+                    type="url"
+                    id="apiUrl"
+                    value="FIXME_API_URL"
+                    placeholder="http://localhost:3000"
+                    aria-describedby="api-url-help"
+                    autocomplete="url"
+                    spellcheck="false"
+                >
+                <span id="api-url-help" class="visually-hidden">Enter the base URL of your Learn Node API server</span>
+                <button
+                    id="testConnection"
+                    class="btn btn-primary"
+                    aria-describedby="connection-status"
+                    type="button"
+                >
+                    Test Connection
+                </button>
+                <span id="connectionStatus" class="status" aria-live="polite" aria-atomic="true"></span>
+            </section>
+
+            <section class="endpoints-section" aria-labelledby="endpoints-heading">
+                <h2 id="endpoints-heading" class="visually-hidden">API Endpoints</h2>
+                <div class="endpoints-grid" role="list">
+                    <!-- Root Endpoint -->
+                    <article class="endpoint-card" role="listitem">
+                        <div class="endpoint-header">
+                            <span class="method" aria-label="HTTP GET method">GET</span>
+                            <code class="path">/</code>
+                        </div>
+                        <p class="description">Welcome message and API information</p>
+                        <button
+                            class="btn btn-secondary"
+                            onclick="fetchEndpoint('/')"
+                            aria-describedby="response-root"
+                            type="button"
+                        >
+                            Fetch
+                        </button>
+                        <div id="response-root" class="response-container" aria-label="Response for root endpoint"></div>
+                    </article>
+
+                    <!-- Ping Endpoint -->
+                    <article class="endpoint-card" role="listitem">
+                        <div class="endpoint-header">
+                            <span class="method" aria-label="HTTP GET method">GET</span>
+                            <code class="path">/ping</code>
+                        </div>
+                        <p class="description">Simple ping-pong response for connectivity test</p>
+                        <button
+                            class="btn btn-secondary"
+                            onclick="fetchEndpoint('/ping')"
+                            aria-describedby="response-ping"
+                            type="button"
+                        >
+                            Fetch
+                        </button>
+                        <div id="response-ping" class="response-container" aria-label="Response for ping endpoint"></div>
+                    </article>
+
+                    <!-- Health Endpoint -->
+                    <article class="endpoint-card" role="listitem">
+                        <div class="endpoint-header">
+                            <span class="method" aria-label="HTTP GET method">GET</span>
+                            <code class="path">/healthz</code>
+                        </div>
+                        <p class="description">Health check endpoint with system metrics</p>
+                        <button
+                            class="btn btn-secondary"
+                            onclick="fetchEndpoint('/healthz')"
+                            aria-describedby="response-healthz"
+                            type="button"
+                        >
+                            Fetch
+                        </button>
+                        <div id="response-healthz" class="response-container" aria-label="Response for health endpoint"></div>
+                    </article>
+
+                    <!-- Info Endpoint -->
+                    <article class="endpoint-card" role="listitem">
+                        <div class="endpoint-header">
+                            <span class="method" aria-label="HTTP GET method">GET</span>
+                            <code class="path">/info</code>
+                        </div>
+                        <p class="description">Detailed application and system information</p>
+                        <button
+                            class="btn btn-secondary"
+                            onclick="fetchEndpoint('/info')"
+                            aria-describedby="response-info"
+                            type="button"
+                        >
+                            Fetch
+                        </button>
+                        <div id="response-info" class="response-container" aria-label="Response for info endpoint"></div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="fetch-all-section">
+                <button
+                    class="btn btn-large"
+                    onclick="fetchAllEndpoints()"
+                    type="button"
+                    aria-describedby="fetch-all-help"
+                >
+                    🔄 Fetch All Endpoints
+                </button>
+                <p id="fetch-all-help" class="visually-hidden">Fetches all available endpoints sequentially</p>
+            </section>
+        </main>
+
+        <footer role="contentinfo">
+            <p>Made with ❤️ for learning Node.js |
+                <a href="https://github.com/dxas90/learn-node" target="_blank" rel="noopener noreferrer">
+                    Backend Repository
+                </a>
+            </p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+
+    <!-- Service Worker Registration for PWA capabilities -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                // Register service worker when available
+                // navigator.serviceWorker.register('/sw.js');
+            });
+        }
+    </script>
+</body>
+</html>

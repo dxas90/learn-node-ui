@@ -1,0 +1,63 @@
+{
+  "name": "learn-node-ui",
+  "version": "1.0.0",
+  "description": "Interactive UI to explore and test Learn Node API endpoints",
+  "main": "src/index.html",
+  "scripts": {
+    "start": "npx http-server src -p 8080 -c-1 --cors -o",
+    "dev": "npx http-server src -p 8080 -c-1 --cors",
+    "serve": "npm run start",
+    "lint:html": "npx htmlhint src/**/*.html",
+    "lint:css": "npx stylelint src/**/*.css",
+    "lint:js": "npx eslint src/**/*.js",
+    "lint": "npm run lint:html && npm run lint:css && npm run lint:js",
+    "format:css": "npx prettier --write src/**/*.css",
+    "format:js": "npx prettier --write src/**/*.js",
+    "format:html": "npx prettier --write src/**/*.html",
+    "format": "npm run format:html && npm run format:css && npm run format:js",
+    "validate": "npm run lint && npm run format",
+    "docker:build": "docker build -t learn-node-ui:latest .",
+    "docker:run": "docker run -d -p 8080:80 --name learn-node-ui -e API_URL=http://localhost:3000 -e ENVIRONMENT=production learn-node-ui:latest",
+    "docker:stop": "docker stop learn-node-ui && docker rm learn-node-ui",
+    "docker:logs": "docker logs -f learn-node-ui",
+    "docker:shell": "docker exec -it learn-node-ui /bin/bash",
+    "test:accessibility": "npx pa11y-ci src/index.html",
+    "test:lighthouse": "npx lighthouse http://localhost:8080 --view",
+    "clean": "rm -rf node_modules package-lock.json",
+    "precommit": "npm run lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dxas90/learn-node-ui.git"
+  },
+  "keywords": [
+    "nodejs",
+    "api",
+    "rest",
+    "ui",
+    "testing",
+    "explorer",
+    "learn",
+    "interactive"
+  ],
+  "author": "Daniel Ramirez <dxas90@gmail.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/dxas90/learn-node-ui/issues"
+  },
+  "homepage": "https://github.com/dxas90/learn-node-ui#readme",
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "htmlhint": "^1.1.4",
+    "http-server": "^14.1.1",
+    "lighthouse": "^11.5.0",
+    "pa11y-ci": "^3.1.0",
+    "prettier": "^3.1.1",
+    "stylelint": "^16.1.0",
+    "stylelint-config-standard": "^36.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}
