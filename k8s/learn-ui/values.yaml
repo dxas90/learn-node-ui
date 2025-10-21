@@ -50,7 +50,9 @@ chart:
 env:
   # Environment variables from file will be loaded here during chart generation
   # if env_file_path is provided in cookiecutter.json
-  variables: {}
+  variables:
+    NODE_ENV: "production"
+    FIXME_API_URL: "http://learn-node-api.default.svc.cluster.local:3000"
 
 # Other values from the original chart are intentionally left as defaults.
 serviceAccount:
@@ -72,7 +74,7 @@ securityContext:
 
 livenessProbe:
   httpGet:
-    path: /healthz
+    path: /
     port: http
   initialDelaySeconds: 3
   periodSeconds: 3
