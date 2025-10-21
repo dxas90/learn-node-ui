@@ -11,9 +11,21 @@ class APIExplorer {
         this.retryAttempts = 3;
         this.endpoints = [
             { path: '/', name: 'root', description: 'Welcome message and API information' },
-            { path: '/ping', name: 'ping', description: 'Simple ping-pong response for connectivity test' },
-            { path: '/healthz', name: 'healthz', description: 'Health check endpoint with system metrics' },
-            { path: '/info', name: 'info', description: 'Detailed application and system information' }
+            {
+                path: '/ping',
+                name: 'ping',
+                description: 'Simple ping-pong response for connectivity test'
+            },
+            {
+                path: '/healthz',
+                name: 'healthz',
+                description: 'Health check endpoint with system metrics'
+            },
+            {
+                path: '/info',
+                name: 'info',
+                description: 'Detailed application and system information'
+            }
         ];
 
         this.init();
@@ -32,13 +44,13 @@ class APIExplorer {
 
     setupEventListeners() {
         // Test connection button
-        const testBtn = document.getElementById('testConnection');
+        const testBtn = document.getElementById('test-connection');
         if (testBtn) {
             testBtn.addEventListener('click', () => this.testConnection());
         }
 
         // API URL input
-        const apiUrlInput = document.getElementById('apiUrl');
+        const apiUrlInput = document.getElementById('api-url');
         if (apiUrlInput) {
             // Enter key to test connection
             apiUrlInput.addEventListener('keypress', (e) => {
@@ -48,9 +60,12 @@ class APIExplorer {
             });
 
             // Save URL to localStorage on input
-            apiUrlInput.addEventListener('input', debounce(() => {
-                this.saveApiUrl();
-            }, 500));
+            apiUrlInput.addEventListener(
+                'input',
+                debounce(() => {
+                    this.saveApiUrl();
+                }, 500)
+            );
 
             // Validate URL format on blur
             apiUrlInput.addEventListener('blur', () => {
@@ -73,27 +88,27 @@ class APIExplorer {
         document.addEventListener('keydown', (e) => {
             if (e.ctrlKey || e.metaKey) {
                 switch (e.key) {
-                    case 'Enter':
-                        e.preventDefault();
-                        this.testConnection();
-                        break;
-                    case 'r':
-                        e.preventDefault();
-                        this.fetchAllEndpoints();
-                        break;
+                case 'Enter':
+                    e.preventDefault();
+                    this.testConnection();
+                    break;
+                case 'r':
+                    e.preventDefault();
+                    this.fetchAllEndpoints();
+                    break;
                 }
             }
         });
     }
 
     getApiUrl() {
-        const input = document.getElementById('apiUrl');
+        const input = document.getElementById('api-url');
         return input ? input.value.trim() : '';
     }
 
     validateApiUrl() {
         const url = this.getApiUrl();
-        const input = document.getElementById('apiUrl');
+        const input = document.getElementById('api-url');
 
         if (!url) {
             this.setInputError(input, 'API URL is required');
@@ -149,7 +164,7 @@ class APIExplorer {
             const stored = localStorage.getItem('learnNodeApiUrl');
             if (stored) {
                 this.apiUrl = stored;
-                const input = document.getElementById('apiUrl');
+                const input = document.getElementById('api-url');
                 if (input && input.value === 'FIXME_API_URL') {
                     input.value = stored;
                 }
@@ -181,8 +196,10 @@ class APIExplorer {
     }
 
     showConnectionStatus(message, isSuccess) {
-        const statusElement = document.getElementById('connectionStatus');
-        if (!statusElement) return;
+        const statusElement = document.getElementById('connection-status');
+        if (!statusElement) {
+            return;
+        }
 
         statusElement.textContent = message;
         statusElement.className = 'status ' + (isSuccess ? 'success' : 'error');
@@ -205,8 +222,8 @@ class APIExplorer {
         }
 
         const apiUrl = this.getApiUrl();
-        const statusElement = document.getElementById('connectionStatus');
-        const testBtn = document.getElementById('testConnection');
+        const statusElement = document.getElementById('connection-status');
+        const testBtn = document.getElementById('test-connection');
 
         if (statusElement) {
             statusElement.textContent = 'Testing...';
@@ -226,7 +243,7 @@ class APIExplorer {
                 method: 'GET',
                 signal: controller.signal,
                 headers: {
-                    'Accept': 'application/json, text/plain'
+                    Accept: 'application/json, text/plain'
                 }
             });
 
@@ -271,7 +288,13 @@ class APIExplorer {
         return data;
     }
 
-    displayResponse(endpoint, data, isError = false, contentType = 'application/json', duration = null) {
+    displayResponse(
+        endpoint,
+        data,
+        isError = false,
+        contentType = 'application/json',
+        duration = null
+    ) {
         const endpointName = endpoint === '/' ? 'root' : endpoint.replace('/', '');
         const responseId = `response-${endpointName}`;
         const responseContainer = document.getElementById(responseId);
@@ -377,12 +400,19 @@ class APIExplorer {
                     textToCopy = JSON.stringify(text, null, 2);
                 } catch (circularError) {
                     // Handle circular references
-                    console.warn('Circular reference detected, using simplified output:', circularError);
-                    textToCopy = JSON.stringify(text, (key, value) => {
-                        return typeof value === 'object' && value !== null
-                            ? '[Circular]'
-                            : value;
-                    }, 2);
+                    console.warn(
+                        'Circular reference detected, using simplified output:',
+                        circularError
+                    );
+                    textToCopy = JSON.stringify(
+                        text,
+                        (key, value) => {
+                            return typeof value === 'object' && value !== null
+                                ? '[Circular]'
+                                : value;
+                        },
+                        2
+                    );
                 }
             } else if (typeof text !== 'string') {
                 textToCopy = String(text);
@@ -444,7 +474,7 @@ class APIExplorer {
                 method: 'GET',
                 signal: controller.signal,
                 headers: {
-                    'Accept': 'application/json, text/plain'
+                    Accept: 'application/json, text/plain'
                 }
             });
 
@@ -462,15 +492,22 @@ class APIExplorer {
                 this.displayResponse(endpoint, data, false, contentType, duration);
             } else {
                 const errorText = await response.text();
-                this.displayResponse(endpoint, `Error ${response.status}: ${errorText}`, true, null, duration);
+                this.displayResponse(
+                    endpoint,
+                    `Error ${response.status}: ${errorText}`,
+                    true,
+                    null,
+                    duration
+                );
             }
         } catch (error) {
             const duration = Math.round(performance.now() - startTime);
 
             if (error.name === 'AbortError') {
                 if (retryCount < this.retryAttempts) {
+                    // eslint-disable-next-line no-console
                     console.log(`Retrying ${endpoint} (attempt ${retryCount + 1})`);
-                    await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1)));
+                    await new Promise((resolve) => setTimeout(resolve, 1000 * (retryCount + 1)));
                     return this.fetchEndpoint(endpoint, retryCount + 1);
                 }
                 this.displayResponse(endpoint, 'Request timeout', true, null, duration);
@@ -504,7 +541,7 @@ class APIExplorer {
             for (const endpoint of this.endpoints) {
                 await this.fetchEndpoint(endpoint.path);
                 // Small delay between requests to avoid overwhelming the server
-                await new Promise(resolve => setTimeout(resolve, 300));
+                await new Promise((resolve) => setTimeout(resolve, 300));
             }
         } finally {
             if (fetchAllBtn) {
@@ -531,12 +568,14 @@ function debounce(func, wait) {
 // Global functions for inline event handlers (backward compatibility)
 let apiExplorer;
 
+// eslint-disable-next-line no-unused-vars
 function fetchEndpoint(endpoint) {
     if (apiExplorer) {
         apiExplorer.fetchEndpoint(endpoint);
     }
 }
 
+// eslint-disable-next-line no-unused-vars
 function fetchAllEndpoints() {
     if (apiExplorer) {
         apiExplorer.fetchAllEndpoints();
@@ -544,6 +583,6 @@ function fetchAllEndpoints() {
 }
 
 // Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     apiExplorer = new APIExplorer();
 });
