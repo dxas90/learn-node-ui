@@ -55,7 +55,8 @@ function formatResponse(data, contentType) {
 
 // Display response in the UI
 function displayResponse(endpoint, data, isError = false, contentType = 'application/json') {
-    const responseId = `response-${endpoint.replace('/', '')}`;
+    const endpointName = endpoint === '/' ? 'root' : endpoint.replace('/', '');
+    const responseId = `response-${endpointName}`;
     const responseContainer = document.getElementById(responseId);
     
     if (!responseContainer) {
@@ -88,7 +89,8 @@ async function fetchEndpoint(endpoint) {
     const fullUrl = `${apiUrl}${endpoint}`;
     
     // Show loading state
-    const responseId = `response-${endpoint.replace('/', '')}`;
+    const endpointName = endpoint === '/' ? 'root' : endpoint.replace('/', '');
+    const responseId = `response-${endpointName}`;
     const responseContainer = document.getElementById(responseId);
     responseContainer.className = 'response-container active loading';
     responseContainer.innerHTML = '<div class="loading-spinner"></div> Loading...';
