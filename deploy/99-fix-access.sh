@@ -59,7 +59,8 @@ log_error() {
 
 # Enable debug mode based on environment variable
 setup_debug() {
-    local debug_level="${MY_DEBUG,,}"  # Convert to lowercase
+    local debug_level="${MY_DEBUG:-false}"  # Default to false if not set
+    debug_level="${debug_level,,}"  # Convert to lowercase
 
     case "${debug_level}" in
         true)
@@ -81,7 +82,7 @@ show_environment() {
     log_info "Environment: ${ENVIRONMENT}"
     log_info "Web Root: ${WEB_ROOT}"
 
-    if [[ "${SHOW_END_RESULT,,}" == "true" ]]; then
+    if [[ "${SHOW_END_RESULT:-false}" == "true" ]]; then
         log_info "Environment variables:"
         env | sort | cut -d= -f1 | sed 's/^/  - /'
     fi

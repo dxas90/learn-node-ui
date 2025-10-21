@@ -70,6 +70,15 @@ RUN chown -R nginx-custom:nginx-custom /usr/share/nginx/html && \
     chmod -R 644 /usr/share/nginx/html && \
     find /usr/share/nginx/html -type d -exec chmod 755 {} \;
 
+# Create nginx cache directories with proper permissions
+RUN mkdir -p /var/cache/nginx/client_temp \
+             /var/cache/nginx/proxy_temp \
+             /var/cache/nginx/fastcgi_temp \
+             /var/cache/nginx/uwsgi_temp \
+             /var/cache/nginx/scgi_temp && \
+    chown -R nginx-custom:nginx-custom /var/cache/nginx && \
+    chmod -R 755 /var/cache/nginx
+
 # Configure nginx to run as non-root user
 RUN sed -i 's/user nginx;/user nginx-custom;/' /etc/nginx/nginx.conf
 
@@ -88,8 +97,5 @@ ENV NGINX_WORKER_PROCESSES=auto \
 # Expose port
 EXPOSE 80
 
-# Use non-root user
-USER nginx-custom
-
-# Start nginx
+# Start nginx (runs as root but nginx master/worker processes will use configured user)
 CMD ["nginx", "-g", "daemon off;"]
