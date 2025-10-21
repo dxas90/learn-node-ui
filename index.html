@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn Node API UI</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Learn Node API Explorer</h1>
+            <p class="subtitle">Interactive UI to explore and test API endpoints</p>
+        </header>
+
+        <div class="config-section">
+            <label for="apiUrl">API Base URL:</label>
+            <input type="text" id="apiUrl" value="http://localhost:3000" placeholder="http://localhost:3000">
+            <button id="testConnection" class="btn btn-primary">Test Connection</button>
+            <span id="connectionStatus" class="status"></span>
+        </div>
+
+        <div class="endpoints-grid">
+            <!-- Root Endpoint -->
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method">GET</span>
+                    <span class="path">/</span>
+                </div>
+                <p class="description">Welcome message and API information</p>
+                <button class="btn btn-secondary" onclick="fetchEndpoint('/')">Fetch</button>
+                <div id="response-root" class="response-container"></div>
+            </div>
+
+            <!-- Ping Endpoint -->
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method">GET</span>
+                    <span class="path">/ping</span>
+                </div>
+                <p class="description">Simple ping-pong response for connectivity test</p>
+                <button class="btn btn-secondary" onclick="fetchEndpoint('/ping')">Fetch</button>
+                <div id="response-ping" class="response-container"></div>
+            </div>
+
+            <!-- Health Endpoint -->
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method">GET</span>
+                    <span class="path">/healthz</span>
+                </div>
+                <p class="description">Health check endpoint with system metrics</p>
+                <button class="btn btn-secondary" onclick="fetchEndpoint('/healthz')">Fetch</button>
+                <div id="response-healthz" class="response-container"></div>
+            </div>
+
+            <!-- Info Endpoint -->
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method">GET</span>
+                    <span class="path">/info</span>
+                </div>
+                <p class="description">Detailed application and system information</p>
+                <button class="btn btn-secondary" onclick="fetchEndpoint('/info')">Fetch</button>
+                <div id="response-info" class="response-container"></div>
+            </div>
+        </div>
+
+        <div class="fetch-all-section">
+            <button class="btn btn-large" onclick="fetchAllEndpoints()">🔄 Fetch All Endpoints</button>
+        </div>
+
+        <footer>
+            <p>Made with ❤️ for learning Node.js | <a href="https://github.com/dxas90/learn-node" target="_blank">Backend Repository</a></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
