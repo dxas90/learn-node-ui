@@ -7,7 +7,7 @@ image:
 
 service:
   type: "ClusterIP"
-  port: 8080
+  port: 80
 
 namespace: "default"
 
@@ -23,7 +23,7 @@ httproute:
             type: PathPrefix
             value: /
       backendRefs:
-        - port: 8080
+        - port: 80
 
 persistence:
   enabled: False
@@ -38,10 +38,10 @@ autoscaling:
 resources:
   limits:
     cpu: 1m
-    memory: 56Mi
+    memory: 64Mi
   requests:
     cpu: 1m
-    memory: 56Mi
+    memory: 64Mi
 
 chart:
   label: "learn-ui"
@@ -62,7 +62,9 @@ serviceAccount:
   name: ""
 
 podSecurityContext:
-  fsGroup: 65534
+  fsGroup: 1001
+  runAsUser: 1001
+  runAsGroup: 1001
 
 securityContext:
   capabilities:
@@ -70,7 +72,7 @@ securityContext:
       - ALL
   readOnlyRootFilesystem: true
   runAsNonRoot: true
-  runAsUser: 1000
+  runAsUser: 1001
 
 livenessProbe:
   httpGet:
@@ -82,6 +84,24 @@ livenessProbe:
 
 readinessProbe:
   tcpSocket:
-    port: 8080
+    port: 80
   initialDelaySeconds: 5
   periodSeconds: 10
+
+# Volume mounts for nginx writable directories (required for readOnlyRootFilesystem)
+volumeMounts:
+  - name: nginx-cache
+    mountPath: /var/cache/nginx
+  - name: nginx-run
+    mountPath: /var/run
+  - name: nginx-tmp
+    mountPath: /tmp
+
+# Volumes for nginx writable directories (emptyDir for temporary storage)
+volumes:
+  - name: nginx-cache
+    emptyDir: {}
+  - name: nginx-run
+    emptyDir: {}
+  - name: nginx-tmp
+    emptyDir: {}

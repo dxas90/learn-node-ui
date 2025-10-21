@@ -62,6 +62,10 @@ COPY ./deploy/default.conf /etc/nginx/conf.d/default.conf
 COPY ./deploy/99-fix-access.sh /docker-entrypoint.d/99-fix-access.sh
 RUN chmod +x /docker-entrypoint.d/99-fix-access.sh
 
+# Copy custom entrypoint script
+COPY ./deploy/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 # Copy application files from builder stage (or directly for now)
 COPY --chown=nginx-custom:nginx-custom ./src/ ./
 
@@ -75,12 +79,16 @@ RUN mkdir -p /var/cache/nginx/client_temp \
              /var/cache/nginx/proxy_temp \
              /var/cache/nginx/fastcgi_temp \
              /var/cache/nginx/uwsgi_temp \
-             /var/cache/nginx/scgi_temp && \
-    chown -R nginx-custom:nginx-custom /var/cache/nginx && \
-    chmod -R 755 /var/cache/nginx
+             /var/cache/nginx/scgi_temp \
+             /tmp/nginx \
+             /var/run/nginx && \
+    chown -R nginx-custom:nginx-custom /var/cache/nginx /tmp/nginx /var/run/nginx && \
+    chmod -R 755 /var/cache/nginx /tmp/nginx /var/run/nginx
 
-# Configure nginx to run as non-root user
-RUN sed -i 's/user nginx;/user nginx-custom;/' /etc/nginx/nginx.conf
+# Configure nginx to run as non-root user and use writable directories
+RUN sed -i 's/user nginx;/user nginx-custom;/' /etc/nginx/nginx.conf && \
+    sed -i 's|pid        /var/run/nginx.pid;|pid /tmp/nginx/nginx.pid;|' /etc/nginx/nginx.conf && \
+    sed -i '/http {/a\    proxy_temp_path /tmp/nginx/proxy_temp;\n    client_body_temp_path /tmp/nginx/client_body_temp;\n    fastcgi_temp_path /tmp/nginx/fastcgi_temp;\n    uwsgi_temp_path /tmp/nginx/uwsgi_temp;\n    scgi_temp_path /tmp/nginx/scgi_temp;' /etc/nginx/nginx.conf
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
@@ -97,5 +105,9 @@ ENV NGINX_WORKER_PROCESSES=auto \
 # Expose port
 EXPOSE 80
 
-# Start nginx (runs as root but nginx master/worker processes will use configured user)
+# Switch to non-root user for Kubernetes security
+USER nginx-custom
+
+# Start nginx (will run as user 1001)
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
