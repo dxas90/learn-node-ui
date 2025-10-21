@@ -134,7 +134,7 @@ replace_placeholder() {
     local files_found=()
     while IFS= read -r -d '' file; do
         files_found+=("${file}")
-    done < <(grep -rlZ "${placeholder}" "${search_path}" 2>/dev/null || true)
+    done < <(grep -rl "${placeholder}" "${search_path}" 2>/dev/null || true)
 
     if [[ ${#files_found[@]} -eq 0 ]]; then
         log_warning "No files found containing placeholder: ${placeholder}"

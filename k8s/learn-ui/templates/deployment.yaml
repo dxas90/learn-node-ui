@@ -59,7 +59,7 @@ spec:
             - configMapRef:
                 name: {{ include "base.fullname" . }}-config
             - secretRef:
-                name: {{ cookiecutter.app_name }}-secret
+                name: {{ include "base.fullname" . }}-secret
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
