@@ -14,5 +14,3 @@ experimental = true
 PROJECT_NAME = "{{ config_root | basename }}"
 LC_ALL = "en_US.UTF-8"
 LC_CTYPE = "en_US.UTF-8"
-# Get the current external IP address without relying on curl or wget
-CURRENT_EXTERNAL_IP = "{{ exec(command='exec 3<>/dev/tcp/icanhazip.com/80; printf \"GET / HTTP/1.1\r\nHost: icanhazip.com\r\nConnection: close\r\n\r\n\" >&3; while read -r line <&3; do [[ $line =~ ^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+$ ]] && echo \"$line\" && break; done; exec 3<&-; exec 3>&-') }}"

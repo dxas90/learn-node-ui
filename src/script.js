@@ -88,14 +88,14 @@ class APIExplorer {
         document.addEventListener('keydown', (e) => {
             if (e.ctrlKey || e.metaKey) {
                 switch (e.key) {
-                case 'Enter':
-                    e.preventDefault();
-                    this.testConnection();
-                    break;
-                case 'r':
-                    e.preventDefault();
-                    this.fetchAllEndpoints();
-                    break;
+                    case 'Enter':
+                        e.preventDefault();
+                        this.testConnection();
+                        break;
+                    case 'r':
+                        e.preventDefault();
+                        this.fetchAllEndpoints();
+                        break;
                 }
             }
         });
