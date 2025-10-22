@@ -1,0 +1,6 @@
+# Playwright Test Artifacts
+report/
+results.json
+test-results/
+*.png
+*.webm

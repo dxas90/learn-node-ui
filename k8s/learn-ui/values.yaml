@@ -12,7 +12,7 @@ service:
 namespace: "default"
 
 httproute:
-  enabled: False
+  enabled: false
   gatewayName: "gateway"
   gatewayNamespace: "gateway-system"
   hostnames:
@@ -26,14 +26,14 @@ httproute:
         - port: 80
 
 persistence:
-  enabled: False
+  enabled: false
   capacity: "8Mi"
   mountPath: "/data"
 
 autoscaling:
-  enabled: False
+  enabled: false
   minReplicas: 1
-  maxReplicas: 100
+  maxReplicas: 10
 
 resources:
   limits:
@@ -53,6 +53,15 @@ env:
   variables:
     NODE_ENV: "production"
     FIXME_API_URL: "http://learn-node-api.default.svc.cluster.local:3000"
+
+# Common secret and settings references
+common:
+  secrets:
+    enabled: false
+    name: "common-secrets"
+  settings:
+    enabled: false
+    name: "common-settings"
 
 # Other values from the original chart are intentionally left as defaults.
 serviceAccount:

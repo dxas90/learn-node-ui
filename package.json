@@ -22,6 +22,14 @@
     "docker:logs": "docker logs -f learn-node-ui",
     "docker:shell": "docker exec -it learn-node-ui /bin/bash",
     "test:accessibility": "echo '✓ Accessibility: HTML validated with semantic elements, ARIA labels, and WCAG2AA compliance'",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:chromium": "playwright test --project=chromium",
+    "test:e2e:firefox": "playwright test --project=firefox",
+    "test:e2e:webkit": "playwright test --project=webkit",
+    "test:e2e:report": "playwright show-report tests/e2e/report",
     "test:lighthouse": "npx lighthouse http://localhost:8080 --view",
     "clean": "rm -rf node_modules package-lock.json",
     "precommit": "npm run lint"
@@ -47,6 +55,7 @@
   },
   "homepage": "https://github.com/dxas90/learn-node-ui#readme",
   "devDependencies": {
+    "@playwright/test": "^1.49.0",
     "eslint": "^8.56.0",
     "htmlhint": "^1.1.4",
     "http-server": "^14.1.1",
