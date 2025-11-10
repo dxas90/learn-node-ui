@@ -5,7 +5,7 @@
 # ============================================================================
 # Build Stage (optional - for future build steps like minification)
 # ============================================================================
-FROM node:22-alpine AS builder
+FROM node:24-alpine AS builder
 
 # Create app directory
 WORKDIR /app
