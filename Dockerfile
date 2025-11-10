@@ -23,7 +23,7 @@ COPY package*.json ./
 # ============================================================================
 # Production Stage
 # ============================================================================
-FROM nginx:1.25-alpine AS production
+FROM nginx:1.29-alpine AS production
 
 # Metadata
 LABEL maintainer="Daniel Ramirez <dxas90@gmail.com>" \
