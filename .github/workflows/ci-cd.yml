@@ -211,7 +211,7 @@ jobs:
 
       - name: Test Docker image
         run: |
-          docker run -d --name test-container -p 8080:80 -e API_URL=http://localhost:3000 -e ENVIRONMENT=production ${{ env.IMAGE_NAME }}:${{ github.sha }}
+          docker run -d --name test-container -p 8080:80 -e API_URL=http://localhost:3000 -e ENVIRONMENT=production ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:sha-${GITHUB_SHA::7}
           sleep 5
           curl -f http://localhost:8080 || exit 1
           docker logs test-container
