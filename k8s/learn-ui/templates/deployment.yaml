@@ -62,7 +62,7 @@ spec:
                 name: {{ include "base.fullname" . }}-secret
 {{- if .Values.common.secrets.enabled }}
             - secretRef:
-                name: {{ .Values.common.secret.name }}
+                name: {{ .Values.common.secrets.name }}
 {{- end }}
 {{- if .Values.common.settings.enabled }}
             - configMapRef:
