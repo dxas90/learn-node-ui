@@ -87,7 +87,7 @@ RUN mkdir -p /var/cache/nginx/client_temp \
 
 # Configure nginx to run as non-root user and use writable directories
 RUN sed -i 's/user nginx;/user nginx-custom;/' /etc/nginx/nginx.conf && \
-    sed -i 's|pid        /var/run/nginx.pid;|pid /tmp/nginx/nginx.pid;|' /etc/nginx/nginx.conf && \
+    sed -i 's|pid        /run/nginx.pid;|pid /tmp/nginx/nginx.pid;|' /etc/nginx/nginx.conf && \
     sed -i '/http {/a\    proxy_temp_path /tmp/nginx/proxy_temp;\n    client_body_temp_path /tmp/nginx/client_body_temp;\n    fastcgi_temp_path /tmp/nginx/fastcgi_temp;\n    uwsgi_temp_path /tmp/nginx/uwsgi_temp;\n    scgi_temp_path /tmp/nginx/scgi_temp;' /etc/nginx/nginx.conf
 
 # Health check
@@ -105,9 +105,9 @@ ENV NGINX_WORKER_PROCESSES=auto \
 # Expose port
 EXPOSE 80
 
-# Switch to non-root user for Kubernetes security
-USER nginx-custom
-
 # Start nginx (will run as user 1001)
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
+
+# Switch to non-root user for Kubernetes security
+USER nginx-custom

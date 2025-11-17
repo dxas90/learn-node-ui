@@ -10,5 +10,9 @@ mkdir -p /var/cache/nginx/client_temp \
          /tmp/nginx \
          /var/run/nginx 2>/dev/null || true
 
-# Execute the original nginx entrypoint
-exec /docker-entrypoint.sh "$@"
+# Ensure /tmp/nginx directory exists and is writable by nginx-custom
+mkdir -p /tmp/nginx
+chown -R nginx-custom:nginx-custom /tmp/nginx
+
+# Execute the original entrypoint
+exec "$@"
