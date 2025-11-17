@@ -2,6 +2,7 @@
   "name": "learn-node-ui",
   "version": "1.0.0",
   "description": "Interactive UI to explore and test Learn Node API endpoints",
+  "type": "module",
   "main": "src/index.html",
   "scripts": {
     "start": "npx http-server src -p 8080 -c-1 --cors -o",
@@ -57,6 +58,7 @@
   "devDependencies": {
     "@playwright/test": "^1.49.0",
     "eslint": "^9.0.0",
+    "globals": "^16.5.0",
     "htmlhint": "^1.1.4",
     "http-server": "^14.1.1",
     "lighthouse": "^13.0.0",
