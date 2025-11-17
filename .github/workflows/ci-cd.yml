@@ -1,7 +1,11 @@
 name: CI/CD Pipeline
 permissions:
   contents: read
-
+  packages: write
+  security-events: write
+  actions: read  # Required for CodeQL upload-sarif action
+  checks: write  # Required for publishing test results
+  pull-requests: write  # Required for PR comments
 on:
   push:
     branches: [ main, develop ]
@@ -10,8 +14,8 @@ on:
   workflow_dispatch:
 
 env:
-  IMAGE_NAME: learn-node-ui
   REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   lint-and-validate:
