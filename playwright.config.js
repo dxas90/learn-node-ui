@@ -1,10 +1,10 @@
-const { defineConfig, devices } = require('@playwright/test');
+import { defineConfig, devices } from '@playwright/test';
 
 /**
  * Playwright Test Configuration
  * @see https://playwright.dev/docs/test-configuration
  */
-module.exports = defineConfig({
+export default defineConfig({
   testDir: './tests/e2e',
 
   /* Maximum time one test can run for */
