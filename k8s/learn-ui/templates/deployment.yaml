@@ -60,7 +60,7 @@ spec:
                 name: {{ include "base.fullname" . }}-config
             - secretRef:
                 name: {{ include "base.fullname" . }}-secret
-{{- if .Values.common.secret.enabled }}
+{{- if .Values.common.secrets.enabled }}
             - secretRef:
                 name: {{ .Values.common.secret.name }}
 {{- end }}
